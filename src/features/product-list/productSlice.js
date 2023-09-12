@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchAllProducts, fetchAllProductsByFilter } from './productAPI';
+import { fetchAllProducts, fetchAllProductsByFilter, fetchBrands, fetchCategories, fetchCategory } from './productAPI';
 
 const initialState = {
   products: [],
+  brands:[],
+  categories:[],
   status: 'idle',
   totalItems:0
 };
@@ -21,6 +23,22 @@ export const fetchAllProductsByFilterAsync = createAsyncThunk(
   'product/fetchAllProductsByFilterAsync',
   async ({filter,sort,pagination}) => {
     const response = await fetchAllProductsByFilter({filter,sort,pagination});
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+)
+export const fetchBrandsAsync = createAsyncThunk(
+  'product/fetchBrands',
+  async () => {
+    const response = await fetchBrands();
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+export const fetchCategoriesAsync = createAsyncThunk(
+  'product/fetchCategories',
+  async () => {
+    const response = await fetchCategories();
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -51,7 +69,21 @@ export const productSlice = createSlice({
         state.status = 'idle';
         state.products = action.payload.products;
         state.totalItems=action.payload.totalItems
-      });
+      })
+      .addCase(fetchBrandsAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchBrandsAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.brands = action.payload;
+      })
+      .addCase(fetchCategoriesAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.categories = action.payload;
+      })
   },
 });
 
@@ -62,5 +94,7 @@ export const { increment, decrement, incrementByAmount } = productSlice.actions;
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectAllProduct = (state) => state.product.products;
 export const selectTotalItems=(state)=>state.product.totalItems
+export const selectCategories=(state)=>state.product.categories
+export const selectBrands=(state)=>state.product.brands
 
 export default productSlice.reducer;
