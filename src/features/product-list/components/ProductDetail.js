@@ -5,6 +5,8 @@ import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductByIdAsync, selectProductById } from '../productSlice'
 import { useParams } from 'react-router-dom'
+import { addToCartAsync } from '../../cart/cartSlice'
+import { selectloggedInUser } from '../../auth/authSlice'
 
 
 const colors= [
@@ -38,8 +40,15 @@ const ProductDetail = () => {
     const [selectedColor, setSelectedColor] = useState(colors[0])
     const [selectedSize, setSelectedSize] = useState(sizes[2])
     const product =useSelector(selectProductById)
+    const user=useSelector(selectloggedInUser)
     const params=useParams()
     const dispatch=useDispatch()
+
+    const handleCart=(e)=>{
+      e.preventDefault()
+      dispatch(addToCartAsync({...product,quantity:1,user:user.id}))
+    }
+
     useEffect(()=>{
       dispatch(fetchProductByIdAsync(params.id))
     },[dispatch,params.id])
@@ -241,6 +250,7 @@ const ProductDetail = () => {
                 </div>
   
                 <button
+                onClick={(e)=>handleCart(e)}
                   type="submit"
                   className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import {
   increment,
   incrementAsync,
-  selectCount,
 } from '../features/cart/cartSlice'
 const products = [
   {
@@ -53,7 +52,6 @@ const addresses = [
 ]
 
 const Checkout = () => {
-  const count = useSelector(selectCount)
   const dispatch = useDispatch()
 
   return (
