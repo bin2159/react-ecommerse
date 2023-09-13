@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm} from 'react-hook-form'
 import { checkUserAsync, selectCount, selectError, selectloggedInUser } from '../authSlice'
 import { Link, Navigate } from 'react-router-dom'
 

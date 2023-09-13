@@ -26,6 +26,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom'
 import { ITEM_PER_PAGE } from '../../../app/constant'
+import { selectloggedInUser } from '../../auth/authSlice'
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
   { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
