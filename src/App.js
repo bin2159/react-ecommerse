@@ -27,6 +27,9 @@ import UserOrderPage from './pages/UserOrderPage'
 import UserProfile from './features/user/components/UserProfile'
 import UserProfilePage from './pages/UserProfilePage'
 import { fetchLoggedInUserAsync } from './features/user/userSlice'
+import LogOut from './features/auth/components/LogOut'
+import ForgotPassword from './features/auth/components/ForgotPassword'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
 
 const router = createBrowserRouter([
   {
@@ -44,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignUpPage />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPasswordPage />,
   },
   {
     path: '/cart',
@@ -73,31 +80,30 @@ const router = createBrowserRouter([
     path: '/order-success/:id',
     element: (
       <Protected>
-        <OrderSuccessPage/>
+        <OrderSuccessPage />
       </Protected>
-    ), 
+    ),
   },
   {
     path: '/orders',
     element: (
       <Protected>
-        <UserOrderPage/>
+        <UserOrderPage />
       </Protected>
-    ), 
+    ),
   },
   {
     path: '/profile',
     element: (
       <Protected>
-        <UserProfilePage/>
+        <UserProfilePage />
       </Protected>
-    ), 
+    ),
   },
+  { path: '/logOut', element: <LogOut /> },
   {
     path: '*',
-    element: (
-     <PageNotFound/>
-    ),
+    element: <PageNotFound />,
   },
 ])
 function App() {
@@ -108,7 +114,7 @@ function App() {
       dispatch(fetchCartByUserIdAsync(user.id))
       dispatch(fetchLoggedInUserAsync(user.id))
     }
-  }, [dispatch,user])
+  }, [dispatch, user])
   return <RouterProvider router={router} />
 }
 
