@@ -20,6 +20,13 @@ import Protected from './features/auth/components/Protected'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCartByUserIdAsync } from './features/cart/cartSlice'
 import { selectloggedInUser } from './features/auth/authSlice'
+import PageNotFound from './pages/404'
+import OrderSuccessPage from './pages/OrderSuccessPage'
+import UserOrders from './features/user/components/UserOrders'
+import UserOrderPage from './pages/UserOrderPage'
+import UserProfile from './features/user/components/UserProfile'
+import UserProfilePage from './pages/UserProfilePage'
+import { fetchLoggedInUserAsync } from './features/user/userSlice'
 
 const router = createBrowserRouter([
   {
@@ -62,6 +69,36 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
+  {
+    path: '/order-success/:id',
+    element: (
+      <Protected>
+        <OrderSuccessPage/>
+      </Protected>
+    ), 
+  },
+  {
+    path: '/orders',
+    element: (
+      <Protected>
+        <UserOrderPage/>
+      </Protected>
+    ), 
+  },
+  {
+    path: '/profile',
+    element: (
+      <Protected>
+        <UserProfilePage/>
+      </Protected>
+    ), 
+  },
+  {
+    path: '*',
+    element: (
+     <PageNotFound/>
+    ),
+  },
 ])
 function App() {
   const dispatch = useDispatch()
@@ -69,6 +106,7 @@ function App() {
   useEffect(() => {
     if (user) {
       dispatch(fetchCartByUserIdAsync(user.id))
+      dispatch(fetchLoggedInUserAsync(user.id))
     }
   }, [dispatch,user])
   return <RouterProvider router={router} />

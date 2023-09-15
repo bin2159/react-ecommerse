@@ -9,8 +9,9 @@ import {
   updateItemAsync,
 } from '../features/cart/cartSlice'
 import { useForm } from 'react-hook-form'
-import { selectloggedInUser, updateUserAsync } from '../features/auth/authSlice'
-import { createOrderAsync } from '../features/order/orderSlice'
+import { selectloggedInUser} from '../features/auth/authSlice'
+import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice'
+import { selectUserInfo, updateUserAsync } from '../features/user/userSlice'
 const products = [
   {
     id: 1,
@@ -49,7 +50,8 @@ const Checkout = () => {
     reset,
     formState: { errors },
   } = useForm()
-  const user = useSelector(selectloggedInUser)
+  const user = useSelector(selectUserInfo)
+  const currentOrder=useSelector(selectCurrentOrder)
   const [selectedAddress,setSelectedAddress]=useState(null)
   const [paymentMethod,setPaymentMethod]=useState('cash')
   const totalAmount = items.reduce(
@@ -64,19 +66,20 @@ const Checkout = () => {
     dispatch(deleteItemAsync(id))
   }
   const handleAddress=(e,address)=>{
-    setSelectedAddress(e.target.value)
+    setSelectedAddress(address)
   }
   const handlePayment=(e)=>{
     setPaymentMethod(e.target.value)
   }
   const handleOrder=()=>{
-    const order={items,totalAmount,totalItem,user,paymentMethod,selectedAddress}
+    console.log(selectedAddress)
+    const order={items,totalAmount,totalItem,user,paymentMethod,selectedAddress,status:'pending'}
     dispatch(createOrderAsync(order))
-    
   }
   return (
     <>
       {!items.length && <Navigate to='/' />}
+      {currentOrder&&<Navigate to={`/order-success/${currentOrder.id}`} replace={true}/>}
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5'>
           <div className='lg:col-span-3'>
@@ -210,7 +213,7 @@ const Checkout = () => {
                         type='text'
                         name='region'
                         id='region'
-                        {...register('State', {
+                        {...register('state', {
                           required: 'State is required',
                         })}
                         className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
@@ -230,7 +233,7 @@ const Checkout = () => {
                         type='text'
                         name='pin-code'
                         id='pin-code'
-                        {...register('pinCode', {
+                        {...register('pincode', {
                           required: 'Pin-Code is required',
                         })}
                         className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
@@ -272,7 +275,7 @@ const Checkout = () => {
                       >
                         <div className='flex min-w-0 gap-x-4'>
                           <input
-                            onChange={(e)=>handleAddress(e,address)}
+                            onChange={(e)=> handleAddress(e,address)}
                             name='address'
                             type='radio'
                             value={index}
