@@ -12,33 +12,8 @@ import { useForm } from 'react-hook-form'
 import { selectloggedInUser} from '../features/auth/authSlice'
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice'
 import { selectUserInfo, updateUserAsync } from '../features/user/userSlice'
-const products = [
-  {
-    id: 1,
-    name: 'Throwback Hip Bag',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
-    quantity: 1,
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-    imageAlt:
-      'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-  },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  // More products...
-]
+import { discountPercentage } from '../app/constant'
+
 
 const Checkout = () => {
   const items = useSelector(selectItem)
@@ -55,7 +30,7 @@ const Checkout = () => {
   const [selectedAddress,setSelectedAddress]=useState(null)
   const [paymentMethod,setPaymentMethod]=useState('cash')
   const totalAmount = items.reduce(
-    (amount, item) => amount + item.price * item.quantity,
+    (amount, item) => amount + discountPercentage(item) * item.quantity,
     0
   )
   const totalItem = items.reduce((total, item) => total + item.quantity, 0)
@@ -378,7 +353,7 @@ const Checkout = () => {
                               <h3>
                                 <a href={product.href}>{product.title}</a>
                               </h3>
-                              <p className='ml-4'>${product.price}</p>
+                              <p className='ml-4'>${discountPercentage(product)}</p>
                             </div>
                             <p className='mt-1 text-sm text-gray-500'>
                               {product.brand}

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectloggedInUser } from '../../auth/authSlice'
 import { fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrder } from '../userSlice'
 import { Link } from 'react-router-dom'
+import { discountPercentage } from '../../../app/constant'
 
 export default function UserOrders() {
   const user = useSelector(selectUserInfo)
@@ -45,7 +46,7 @@ export default function UserOrders() {
                               <h3>
                                 <a href={product.href}>{product.title}</a>
                               </h3>
-                              <p className='ml-4'>${product.price}</p>
+                              <p className='ml-4'>${discountPercentage(product)}</p>
                             </div>
                             <p className='mt-1 text-sm text-gray-500'>
                               {product.brand}
