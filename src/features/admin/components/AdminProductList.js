@@ -8,7 +8,7 @@ import {
   selectBrands,
   selectCategories,
   selectTotalItems,
-} from '../productSlice'
+} from '../../product-list/productSlice'
 import { Fragment } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
@@ -35,7 +35,7 @@ const sortOptions = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-export default function ProductList() {
+export default function AdminProductList() {
   const products = useSelector(selectAllProduct)
   const totalItems = useSelector(selectTotalItems)
   const brands = useSelector(selectBrands)
@@ -53,7 +53,7 @@ export default function ProductList() {
       options: categories,
     },
     {
-      id: 'brand',
+      id: 'brands',
       name: 'Brands',
       options: brands,
     },
@@ -468,10 +468,16 @@ const ProductGrid = ({ products }) => {
   return (
     <>
       <div className='bg-white'>
+        <div className='flex flex-col items-center justify-center'>
+          <Link to='product-form' className='rounded-md bg-green-600 py-1 mt-2 w-1/4 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+            Add Product
+        </Link>
+        </div>
         <div className='mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
           <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8'>
             {products.map((product) => (
-              <Link to={`/product-detail/${product.id}`} key={product.id}>
+              <div key={product.id}>
+              <Link to={`/product-detail/${product.id}`} >
                 <div className='group relative border-solid border-2 border-gray-200 p-2'>
                   <div className='min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60'>
                     <img
@@ -508,8 +514,15 @@ const ProductGrid = ({ products }) => {
                       </p>
                     </div>
                   </div>
+                 {product.delete&& <div className='text-sm text-red-500 text-center text'>Product Deleted</div>}
                 </div>
               </Link>
+              <div className=' flex m-0'>
+              <Link to={`product-form/edit/${product.id}`} className='rounded-md bg-indigo-600 px-3 py-1 w-full text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+                Edit Product
+              </Link>
+            </div>
+            </div>
             ))}
           </div>
         </div>

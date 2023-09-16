@@ -51,12 +51,17 @@ export default function UserProfile() {
   return (
     <div>
       <div className='mx-auto mt-10 max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-white'>
-        <h1 className='text-4xl font-bold tracking-tight text-gray-900 py-2 '>
+      <div className='border-b-2 pb-2'>
+      <h1 className='text-4xl font-bold tracking-tight text-gray-900 py-2 '>
           Name: {user.name ? user.name : 'New User'}
         </h1>
-        <h3 className='text-2xl font-bold tracking-tight text-red-900 pb-6 border-b-2 '>
+        <h3 className='text-2xl font-bold tracking-tight text-red-900 pb-2  '>
           Email Address: {user.email}
         </h3>
+        {user.role==='admin'&&<h3 className='text-2xl font-bold tracking-tight text-red-900 pb-2'>
+          Role: {user.role}
+        </h3>}
+      </div>
         <button
         onClick={e=>handleAddAddress()}
                   type='submit'

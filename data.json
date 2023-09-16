@@ -4,7 +4,7 @@
       "id": 1,
       "title": "iPhone 9",
       "description": "An apple mobile which is nothing like apple",
-      "price": 549,
+      "price": 999,
       "discountPercentage": 12.96,
       "rating": 4.69,
       "stock": 94,
@@ -14,10 +14,9 @@
       "images": [
         "https://i.dummyjson.com/data/products/1/1.jpg",
         "https://i.dummyjson.com/data/products/1/2.jpg",
-        "https://i.dummyjson.com/data/products/1/3.jpg",
-        "https://i.dummyjson.com/data/products/1/4.jpg",
-        "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
-      ]
+        "https://i.dummyjson.com/data/products/1/3.jpg"
+      ],
+      "delete": true
     },
     {
       "id": 2,
@@ -1838,111 +1837,32 @@
         "https://i.dummyjson.com/data/products/100/3.jpg",
         "https://i.dummyjson.com/data/products/100/thumbnail.jpg"
       ]
+    },
+    {
+      "id": 101
+    },
+    {
+      "id": 102
+    },
+    {
+      "title": "Mac book air 2023",
+      "description": "Mac Book air 2023",
+      "brand": "Apple",
+      "category": "laptops",
+      "price": "1099",
+      "discountPercentage": "10",
+      "stock": "1",
+      "thumbnail": "https://i.dummyjson.com/data/products/100/1.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/100/1.jpg",
+        "https://i.dummyjson.com/data/products/100/1.jpg",
+        "https://i.dummyjson.com/data/products/100/1.jpg"
+      ],
+      "rating": 0,
+      "id": 103
     }
   ],
   "brands": [
-    {
-      "value": "smartphones",
-      "label": "smartphones",
-      "checked": false
-    },
-    {
-      "value": "laptops",
-      "label": "laptops",
-      "checked": false
-    },
-    {
-      "value": "fragrances",
-      "label": "fragrances",
-      "checked": false
-    },
-    {
-      "value": "skincare",
-      "label": "skincare",
-      "checked": false
-    },
-    {
-      "value": "groceries",
-      "label": "groceries",
-      "checked": false
-    },
-    {
-      "value": "home-decoration",
-      "label": "home decoration",
-      "checked": false
-    },
-    {
-      "value": "furniture",
-      "label": "furniture",
-      "checked": false
-    },
-    {
-      "value": "tops",
-      "label": "tops",
-      "checked": false
-    },
-    {
-      "value": "womens-dresses",
-      "label": "womens dresses",
-      "checked": false
-    },
-    {
-      "value": "womens-shoes",
-      "label": "womens shoes",
-      "checked": false
-    },
-    {
-      "value": "mens-shirts",
-      "label": "mens shirts",
-      "checked": false
-    },
-    {
-      "value": "mens-shoes",
-      "label": "mens shoes",
-      "checked": false
-    },
-    {
-      "value": "mens-watches",
-      "label": "mens watches",
-      "checked": false
-    },
-    {
-      "value": "womens-watches",
-      "label": "womens watches",
-      "checked": false
-    },
-    {
-      "value": "womens-bags",
-      "label": "womens bags",
-      "checked": false
-    },
-    {
-      "value": "womens-jewellery",
-      "label": "womens jewellery",
-      "checked": false
-    },
-    {
-      "value": "sunglasses",
-      "label": "sunglasses",
-      "checked": false
-    },
-    {
-      "value": "automotive",
-      "label": "automotive",
-      "checked": false
-    },
-    {
-      "value": "motorcycle",
-      "label": "motorcycle",
-      "checked": false
-    },
-    {
-      "value": "lighting",
-      "label": "lighting",
-      "checked": false
-    }
-  ],
-  "categories": [
     {
       "value": "Apple",
       "label": "Apple",
@@ -2334,10 +2254,113 @@
       "checked": false
     }
   ],
+  "categories": [
+    {
+      "value": "smartphones",
+      "label": "smartphones",
+      "checked": false
+    },
+    {
+      "value": "laptops",
+      "label": "laptops",
+      "checked": false
+    },
+    {
+      "value": "fragrances",
+      "label": "fragrances",
+      "checked": false
+    },
+    {
+      "value": "skincare",
+      "label": "skincare",
+      "checked": false
+    },
+    {
+      "value": "groceries",
+      "label": "groceries",
+      "checked": false
+    },
+    {
+      "value": "home-decoration",
+      "label": "home decoration",
+      "checked": false
+    },
+    {
+      "value": "furniture",
+      "label": "furniture",
+      "checked": false
+    },
+    {
+      "value": "tops",
+      "label": "tops",
+      "checked": false
+    },
+    {
+      "value": "womens-dresses",
+      "label": "womens dresses",
+      "checked": false
+    },
+    {
+      "value": "womens-shoes",
+      "label": "womens shoes",
+      "checked": false
+    },
+    {
+      "value": "mens-shirts",
+      "label": "mens shirts",
+      "checked": false
+    },
+    {
+      "value": "mens-shoes",
+      "label": "mens shoes",
+      "checked": false
+    },
+    {
+      "value": "mens-watches",
+      "label": "mens watches",
+      "checked": false
+    },
+    {
+      "value": "womens-watches",
+      "label": "womens watches",
+      "checked": false
+    },
+    {
+      "value": "womens-bags",
+      "label": "womens bags",
+      "checked": false
+    },
+    {
+      "value": "womens-jewellery",
+      "label": "womens jewellery",
+      "checked": false
+    },
+    {
+      "value": "sunglasses",
+      "label": "sunglasses",
+      "checked": false
+    },
+    {
+      "value": "automotive",
+      "label": "automotive",
+      "checked": false
+    },
+    {
+      "value": "motorcycle",
+      "label": "motorcycle",
+      "checked": false
+    },
+    {
+      "value": "lighting",
+      "label": "lighting",
+      "checked": false
+    }
+  ],
   "users": [
     {
       "email": "test1@gmail.com",
       "password": "@1Qwertyuiop",
+      "role": "user",
       "addresses": [
         {
           "name": "Bipin S Thomas",
@@ -2365,6 +2388,13 @@
       "password": "@1Qwertyuiop",
       "addresses": [],
       "id": 2
+    },
+    {
+      "email": "admin@gmail.com",
+      "password": "@1Qwertyuiop",
+      "addresses": [],
+      "role": "admin",
+      "id": 3
     }
   ],
   "cart": [],
