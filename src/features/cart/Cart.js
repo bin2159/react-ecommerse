@@ -46,9 +46,10 @@ export default function Cart() {
                     <div>
                       <div className='flex justify-between text-base font-medium text-gray-900'>
                         <h3>
-                          <a href={product.href}>{product.title}</a>
+                          {product.title}
                         </h3>
-                        <p className='ml-4'>${product.price}</p>
+                        <p className='ml-4'>${discountPercentage(product)}</p>
+
                       </div>
                       <p className='mt-1 text-sm text-gray-500'>
                         {product.brand}
