@@ -12,12 +12,12 @@ export default function UserProfile() {
     setValue,
     formState: { errors },
   } = useForm()
-  const user = useSelector(selectUserInfo )
+  const userInfo = useSelector(selectUserInfo )
   const dispatch = useDispatch()
   const [selectedEditIndex,setSelectedEditIndex]=useState(-1)
   const [showAddAddressForm,setShowAddressForm]=useState(false)
   const handleEdit=(updateAddress,index)=>{
-    const newUser={...user,addresses:[...user.addresses]}
+    const newUser={...userInfo,addresses:[...userInfo.addresses]}
     newUser.addresses.splice(index,1,updateAddress)
      dispatch(
       updateUserAsync(newUser)
@@ -25,7 +25,7 @@ export default function UserProfile() {
     setSelectedEditIndex(-1)
   }
   const handleRemove=(e,index)=>{
-    const newUser={...user,addresses:[...user.addresses]}
+    const newUser={...userInfo,addresses:[...userInfo.addresses]}
     newUser.addresses.splice(index,1)
     dispatch(updateUserAsync(newUser))
   }
@@ -44,7 +44,7 @@ export default function UserProfile() {
     setShowAddressForm(true)
   }
   const handleAdd=(address)=>{
-    const newUser={...user,addresses:[...user.addresses,address]}
+    const newUser={...userInfo,addresses:[...userInfo.addresses,address]}
     dispatch(updateUserAsync(newUser))
     setShowAddressForm(false)
   }
@@ -53,13 +53,13 @@ export default function UserProfile() {
       <div className='mx-auto mt-10 max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-white'>
       <div className='border-b-2 pb-2'>
       <h1 className='text-4xl font-bold tracking-tight text-gray-900 py-2 '>
-          Name: {user.name ? user.name : 'New User'}
+          Name: {userInfo.name ? userInfo.name : 'New User'}
         </h1>
         <h3 className='text-2xl font-bold tracking-tight text-red-900 pb-2  '>
-          Email Address: {user.email}
+          Email Address: {userInfo.email}
         </h3>
-        {user.role==='admin'&&<h3 className='text-2xl font-bold tracking-tight text-red-900 pb-2'>
-          Role: {user.role}
+        {userInfo.role==='admin'&&<h3 className='text-2xl font-bold tracking-tight text-red-900 pb-2'>
+          Role: {userInfo.role}
         </h3>}
       </div>
         <button
@@ -240,7 +240,7 @@ export default function UserProfile() {
               </div>
               </form>}
         <p className='mt-0.5 text-sm text-gray-500'>Your Addresses:</p>
-        {user.addresses.map((address,index) => (
+        {userInfo.addresses.map((address,index) => (
           <>
           {selectedEditIndex===index?<form
               className='bg-white px-5 mt-10 py-5 mb-10'

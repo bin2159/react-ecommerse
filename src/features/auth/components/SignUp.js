@@ -2,18 +2,21 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-import { selectloggedInUser, createUserAsync } from '../authSlice'
+import { selectloggedInUser, createUserAsync, selectError, resetError } from '../authSlice'
 import { Link, Navigate } from 'react-router-dom'
 
 export default function SignUp() {
   const dispatch = useDispatch()
+  const error=useSelector(selectError)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
   const user = useSelector(selectloggedInUser)
-
+  const handleResetError=()=>{
+    dispatch(resetError())
+  }
   return (
     <>
       {user && <Navigate to='/' replace={true} />}
@@ -128,6 +131,11 @@ export default function SignUp() {
                 {errors.confirmPassword && (
                   <p className='text-red-500'>
                     {errors.confirmPassword.message}
+                  </p>
+                )}
+                {error&& (
+                  <p className='text-red-500'>
+                    {error.message}
                   </p>
                 )}
               </div>

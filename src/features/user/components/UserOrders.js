@@ -7,19 +7,17 @@ import { Link } from 'react-router-dom'
 import { discountPercentage } from '../../../app/constant'
 
 export default function UserOrders() {
-  const user = useSelector(selectUserInfo)
+  const userInfo = useSelector(selectUserInfo)
   const dispatch = useDispatch()
   const orders = useSelector(selectUserOrder)
-  console.log(orders)
   useEffect(() => {
-    dispatch(fetchLoggedInUserOrdersAsync(user.id))
-  }, [dispatch, user])
+    dispatch(fetchLoggedInUserOrdersAsync(userInfo.id))
+  }, [dispatch, userInfo])
   return (
     <div>
       <div>
         {orders.map((order) => (
-          <>
-            {' '}
+          <div key={order.id}>
             <div className='mx-auto mt-10 max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-white'>
               <h1 className='text-4xl font-bold tracking-tight text-gray-900 py-2 px-4'>
                 Order Id: #{order.id}
@@ -30,12 +28,12 @@ export default function UserOrders() {
               <div className='border-t border-gray-200  py-6 sm:px-6'>
                 <div className='flow-root'>
                   <ul role='list' className='-my-6 divide-y divide-gray-200'>
-                    {order.items.map((product) => (
-                      <li key={product.id} className='flex py-6'>
+                    {order.items.map((item) => (
+                      <li key={item.id} className='flex py-6'>
                         <div className='h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200'>
                           <img
-                            src={product.thumbnail}
-                            alt={product.title}
+                            src={item.product.thumbnail}
+                            alt={item.product.title}
                             className='h-full w-full object-cover object-center'
                           />
                         </div>
@@ -44,12 +42,12 @@ export default function UserOrders() {
                           <div>
                             <div className='flex justify-between text-base font-medium text-gray-900'>
                               <h3>
-                                <a href={product.href}>{product.title}</a>
+                                <a href={item.id}>{item.product.title}</a>
                               </h3>
-                              <p className='ml-4'>${discountPercentage(product)}</p>
+                              <p className='ml-4'>${discountPercentage(item.product)}</p>
                             </div>
                             <p className='mt-1 text-sm text-gray-500'>
-                              {product.brand}
+                              {item.product.brand}
                             </p>
                           </div>
                           <div className='flex flex-1 items-end justify-between text-sm'>
@@ -58,7 +56,7 @@ export default function UserOrders() {
                                 htmlFor='quantity'
                                 className='inline mr-5 text-sm font-medium leading-6 text-gray-900'
                               >
-                                Qty:{product.quantity}
+                                Qty:{item.quantity}
                               </label>
                             </div>
                           </div>
@@ -110,7 +108,7 @@ export default function UserOrders() {
                 </div>
               </div>
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>

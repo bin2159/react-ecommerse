@@ -45,10 +45,8 @@ const ProductDetail = () => {
 
   const handleCart = (e) => {
     e.preventDefault()
-    if(cart.findIndex(item=>item.productId===product.id)<0){
-      console.log(cart,product)
-    const newItem = { ...product,productId:product.id, quantity: 1, user: user.id }
-    delete newItem['id']
+    if(cart.findIndex(item=>item.product.id===product.id)<0){
+    const newItem = {product:product.id, quantity: 1, user: user.id }
     dispatch(addToCartAsync(newItem))
   }else{
     console.log('already added')

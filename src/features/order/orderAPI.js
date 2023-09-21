@@ -19,7 +19,6 @@ export function fetchAllOrders({sort,pagination}) {
     queryString += `${key}=${pagination[key]}&`
   }
   return new Promise(async (resolve) => {
-    //TODO: we will not hardcord server URL  here
     const response = await fetch(
       'http://localhost:8080/orders?' + queryString
     )

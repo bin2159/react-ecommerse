@@ -30,12 +30,12 @@ const Checkout = () => {
   const [selectedAddress,setSelectedAddress]=useState(null)
   const [paymentMethod,setPaymentMethod]=useState('cash')
   const totalAmount = items.reduce(
-    (amount, item) => amount + discountPercentage(item) * item.quantity,
+    (amount, item) => amount + discountPercentage(item.product) * item.quantity,
     0
   )
-  const totalItem = items.reduce((total, item) => total + item.quantity, 0)
+  const totalItems = items.reduce((total, item) => total + item.quantity, 0)
   const handleQuantity = (e, item) => {
-    dispatch(updateItemAsync({ ...item, quantity: +e.target.value }))
+    dispatch(updateItemAsync({id:item.id, quantity: +e.target.value }))
   }
   const handleRemove = (e, id) => {
     dispatch(deleteItemAsync(id))
@@ -47,8 +47,7 @@ const Checkout = () => {
     setPaymentMethod(e.target.value)
   }
   const handleOrder=()=>{
-    console.log(selectedAddress)
-    const order={items,totalAmount,totalItem,user,paymentMethod,selectedAddress,status:'pending'}
+    const order={items,totalAmount,totalItems,user:user.id,paymentMethod,selectedAddress,status:'pending'}
     dispatch(createOrderAsync(order))
   }
   return (
@@ -337,12 +336,12 @@ const Checkout = () => {
               <div className='border-t border-gray-200  py-6 sm:px-6'>
                 <div className='flow-root'>
                   <ul role='list' className='-my-6 divide-y divide-gray-200'>
-                    {items.map((product) => (
-                      <li key={product.id} className='flex py-6'>
+                    {items.map((item) => (
+                      <li key={item.id} className='flex py-6'>
                         <div className='h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200'>
                           <img
-                            src={product.thumbnail}
-                            alt={product.title}
+                            src={item.product.thumbnail}
+                            alt={item.product.title}
                             className='h-full w-full object-cover object-center'
                           />
                         </div>
@@ -351,12 +350,12 @@ const Checkout = () => {
                           <div>
                             <div className='flex justify-between text-base font-medium text-gray-900'>
                               <h3>
-                                <a href={product.href}>{product.title}</a>
+                                <a href={item.product.href}>{item.product.title}</a>
                               </h3>
-                              <p className='ml-4'>${discountPercentage(product)}</p>
+                              <p className='ml-4'>${discountPercentage(item.product)}</p>
                             </div>
                             <p className='mt-1 text-sm text-gray-500'>
-                              {product.brand}
+                              {item.product.brand}
                             </p>
                           </div>
                           <div className='flex flex-1 items-end justify-between text-sm'>
@@ -368,7 +367,7 @@ const Checkout = () => {
                                 Qty
                               </label>
                               <select
-                                onChange={(e) => handleQuantity(e, product)}
+                                onChange={(e) => handleQuantity(e, item)}
                               >
                                 <option value='1'>1</option>
                                 <option value='2'>2</option>
@@ -381,7 +380,7 @@ const Checkout = () => {
 
                             <div className='flex'>
                               <button
-                                onClick={(e) => handleRemove(e, product.id)}
+                                onClick={(e) => handleRemove(e, item.id)}
                                 type='button'
                                 className='font-medium text-indigo-600 hover:text-indigo-500'
                               >
@@ -403,7 +402,7 @@ const Checkout = () => {
                 </div>
                 <div className='flex justify-between text-base my-2 font-medium text-gray-900'>
                   <p>Total Items in cart</p>
-                  <p>{totalItem} items</p>
+                  <p>{totalItems} items</p>
                 </div>
                 <p className='mt-0.5 text-sm text-gray-500'>
                   Shipping and taxes calculated at checkout.

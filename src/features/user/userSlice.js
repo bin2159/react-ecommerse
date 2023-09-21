@@ -6,7 +6,7 @@ import {
 } from './userAPI'
 
 const initialState = {
-  userOrders: [],
+  orders:[],
   status: 'idle',
   userInfo: null,
 }
@@ -15,7 +15,6 @@ export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   'user/fetchLoggedInUserOrders',
   async (userId) => {
     const response = await fetchLoggedInUserOrders(userId)
-    // The value we return becomes the `fulfilled` action payload
     return response.data
   }
 )
@@ -53,7 +52,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle'
-        state.userOrders = action.payload
+        state.orders = action.payload
       })
       .addCase(updateUserAsync.pending, (state) => {
         state.status = 'loading'
@@ -77,7 +76,7 @@ export const { increment, decrement, incrementByAmount } = userSlice.actions
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectUserOrder = (state) => state.user.userOrders
+export const selectUserOrder = (state) => state.user.orders
 export const selectUserInfo = (state) => state.user.userInfo
 
 export default userSlice.reducer
