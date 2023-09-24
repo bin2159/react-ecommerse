@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProductByIdAsync, selectProductById } from '../productSlice'
+import { fetchProductByIdAsync, selectProductById, selectProductListStatus } from '../productSlice'
 import { useParams } from 'react-router-dom'
 import { addToCartAsync, selectItem } from '../../cart/cartSlice'
 import { selectloggedInUser } from '../../auth/authSlice'
+import { useAlert } from 'react-alert'
+import { Grid } from 'react-loader-spinner'
 
 const colors = [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
@@ -39,18 +41,21 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const product = useSelector(selectProductById)
   const user = useSelector(selectloggedInUser)
-  const cart=useSelector(selectItem)
+  const cart = useSelector(selectItem)
+  const status=useSelector(selectProductListStatus)
   const params = useParams()
   const dispatch = useDispatch()
+  const alert = useAlert()
 
   const handleCart = (e) => {
     e.preventDefault()
-    if(cart.findIndex(item=>item.product.id===product.id)<0){
-    const newItem = {product:product.id, quantity: 1, user: user.id }
-    dispatch(addToCartAsync(newItem))
-  }else{
-    console.log('already added')
-  }
+    if (cart.findIndex((item) => item.product.id === product.id) < 0) {
+      const newItem = { product: product.id, quantity: 1, user: user.id }
+      dispatch(addToCartAsync(newItem))
+      alert.success('Item added to Cart')
+    } else {
+      alert.show('already added')
+    }
   }
 
   useEffect(() => {
@@ -59,36 +64,24 @@ const ProductDetail = () => {
 
   return (
     <div className='bg-white'>
+        {status === 'loading' && (
+              <div className='h-screen flex items-center justify-center'>
+                <Grid
+                  height='80'
+                  width='80'
+                  color='rgb(79, 70, 229'
+                  ariaLabel='grid-loading'
+                  radius='12.5'
+                  wrapperStyle={{}}
+                  wrapperClass=''
+                  visible={true}
+                />
+              </div>
+            )}
       {product && (
         <div className='pt-6'>
           <nav aria-label='Breadcrumb'>
-            <ol
-              role='list'
-              className='mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8'
-            >
-              {product.breadcrumbs &&
-                product.breadcrumbs.map((breadcrumb) => (
-                  <li key={breadcrumb.id}>
-                    <div className='flex items-center'>
-                      <a
-                        href={breadcrumb.href}
-                        className='mr-2 text-sm font-medium text-gray-900'
-                      >
-                        {breadcrumb.name}
-                      </a>
-                      <svg
-                        width={16}
-                        height={20}
-                        viewBox='0 0 16 20'
-                        fill='currentColor'
-                        aria-hidden='true'
-                        className='h-5 w-4 text-gray-300'
-                      >
-                        <path d='M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z' />
-                      </svg>
-                    </div>
-                  </li>
-                ))}
+            <ol className='mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8'>
               <li className='text-sm'>
                 <a
                   href={product.href}

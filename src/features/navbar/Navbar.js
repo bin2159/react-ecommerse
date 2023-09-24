@@ -10,10 +10,10 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectItem } from '../cart/cartSlice'
 import { selectloggedInUser } from '../auth/authSlice'
-
+import logo from '../../assets/businesslogo.png'
 const navigation = [
-  { name: 'Products', link: '/', user: true },
-  { name: 'Products', link: '/admin', admin: true},
+  { name: 'Products', link: '/', user: true},
+  { name: 'Admin', link: '/admin', admin: true},
   {name:'Orders',link:'/admin/orders',admin:true}
 
 ]
@@ -43,14 +43,14 @@ export const Navbar = ({ children }) => {
                   <div className='flex-shrink-0'>
                     <Link to='/'>
                       <img
-                        className='h-8 w-8'
-                        src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500'
+                        className='h-12 w-12'
+                        src={logo}
                         alt='Your Company'
                       />
                     </Link>
                   </div>
                   <div className='hidden md:block'>
-                    <div className='ml-10 flex items-baseline space-x-4'>
+                    <div className='ml-8 flex items-baseline space-x-4'>
                       {navigation.map((item) => 
                        (item[user.role]?<Link
                           key={item.name}

@@ -88,7 +88,7 @@ export default function AdminProductList() {
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEM_PER_PAGE }
-    dispatch(fetchAllProductsByFilterAsync({ filter, sort, pagination }))
+    dispatch(fetchAllProductsByFilterAsync({ filter, sort, pagination,admin:true }))
   }, [dispatch, filter, sort, page])
   useEffect(() => {
     dispatch(fetchCategoriesAsync())
@@ -521,7 +521,7 @@ const ProductGrid = ({ products }) => {
                         </p>
                       </div>
                     </div>
-                    {product.delete && (
+                    {product.deleted && (
                       <div className='text-sm text-red-500 text-center text'>
                         Product Deleted
                       </div>

@@ -4,6 +4,8 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { selectloggedInUser, createUserAsync, selectError, resetError } from '../authSlice'
 import { Link, Navigate } from 'react-router-dom'
+import logo from '../../../assets/businesslogo.png'
+
 
 export default function SignUp() {
   const dispatch = useDispatch()
@@ -22,12 +24,12 @@ export default function SignUp() {
       {user && <Navigate to='/' replace={true} />}
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
         <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-          <img
-            className='mx-auto h-10 w-auto'
-            src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
+        <img
+            className='mx-auto h-12 w-12 mt-4'
+            src={logo}
             alt='Your Company'
           />
-          <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
+          <h2 className='mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
             Create Account
           </h2>
         </div>

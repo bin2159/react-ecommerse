@@ -110,18 +110,18 @@ const AdminOrders = () => {
                       #{order.id}
                     </td>
                     <td className=' py-3 px-6 whitespace-nowrap'>
-                      {order.items.map((item) => (
+                      {order.items.map((item,index) => (
                         <div
-                          key={item.name}
+                          key={index}
                           className='flex items-center justify-center py-1'
                         >
                           <img
                             className='w-6 h-6 rounded-full'
-                            src={item.thumbnail}
-                            alt={item.title}
+                            src={item.product.thumbnail}
+                            alt={item.product.title}
                           />
                           <span className='font-medium'>
-                            {item.title} - (${discountPercentage(item)} x{' '}
+                            {item.product.title} - (${discountPercentage(item.product)} x{' '}
                             {item.quantity})
                           </span>
                         </div>
