@@ -1,43 +1,34 @@
 import React, { useEffect } from 'react'
-import logo from './logo.svg'
+import { Provider, positions } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
+import { useDispatch, useSelector } from 'react-redux'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
-import ProductList from './features/product-list/components/ProductList'
-import Home from './pages/Home'
-import LoginPage from './pages/LoginPage'
-import SignUpPage from './pages/SignUpPage'
 import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from 'react-router-dom'
-import Cart from './features/cart/Cart'
+  checkAuthAsync,
+  selectUserChecked,
+  selectloggedInUser,
+} from './features/auth/authSlice'
+import LogOut from './features/auth/components/LogOut'
+import Protected from './features/auth/components/Protected'
+import ProtectedAdmin from './features/auth/components/ProtectedAdmin'
+import { fetchCartByUserIdAsync } from './features/cart/cartSlice'
+import { fetchLoggedInUserAsync } from './features/user/userSlice'
+import PageNotFound from './pages/404'
+import AdminHomePage from './pages/AdminHomePage'
+import AdminOrdersPage from './pages/AdminOrdersPage'
+import AdminProductDetailPage from './pages/AdminProductDetailPage'
+import AdminProductFormPage from './pages/AdminProductFormPage'
 import CartPage from './pages/CartPage'
 import Checkout from './pages/Checkout'
-import ProductDetail from './features/product-list/components/ProductDetail'
-import ProductDetailPage from './pages/ProductDetailPage'
-import Protected from './features/auth/components/Protected'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCartByUserIdAsync } from './features/cart/cartSlice'
-import { selectloggedInUser } from './features/auth/authSlice'
-import PageNotFound from './pages/404'
-import OrderSuccessPage from './pages/OrderSuccessPage'
-import UserOrders from './features/user/components/UserOrders'
-import UserOrderPage from './pages/UserOrderPage'
-import UserProfile from './features/user/components/UserProfile'
-import UserProfilePage from './pages/UserProfilePage'
-import { fetchLoggedInUserAsync } from './features/user/userSlice'
-import LogOut from './features/auth/components/LogOut'
-import ForgotPassword from './features/auth/components/ForgotPassword'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
-import ProtectedAdmin from './features/auth/components/ProtectedAdmin'
-import AdminHomePage from './pages/AdminHomePage'
-import AdminProductDetailPage from './pages/AdminProductDetailPage'
-import ProductForm from './features/admin/components/ProductForm'
-import AdminProductFormPage from './pages/AdminProductFormPage'
-import AdminOrdersPage from './pages/AdminOrdersPage'
-import { positions, Provider } from 'react-alert'
-import AlertTemplate from 'react-alert-template-basic'
+import Home from './pages/Home'
+import LoginPage from './pages/LoginPage'
+import OrderSuccessPage from './pages/OrderSuccessPage'
+import ProductDetailPage from './pages/ProductDetailPage'
+import SignUpPage from './pages/SignUpPage'
+import UserOrderPage from './pages/UserOrderPage'
+import UserProfilePage from './pages/UserProfilePage'
 const options = {
   timeout: 5000,
   position: positions.BOTTOM_LEFT,
@@ -161,15 +152,26 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch()
   const user = useSelector(selectloggedInUser)
+  const userChecked = useSelector(selectUserChecked)
+  useEffect(() => {
+    dispatch(checkAuthAsync())
+  }, [dispatch])
+
   useEffect(() => {
     if (user) {
-      dispatch(fetchCartByUserIdAsync(user.id))
-      dispatch(fetchLoggedInUserAsync(user.id))
+      dispatch(fetchCartByUserIdAsync())
+      dispatch(fetchLoggedInUserAsync())
     }
   }, [dispatch, user])
-  return <Provider template={AlertTemplate} {...options}>
-    <RouterProvider router={router} />
-  </Provider>
+  return (
+    <div>
+      {userChecked && (
+        <Provider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+        </Provider>
+      )}
+    </div>
+  )
 }
 
 export default App

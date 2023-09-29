@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchProductByIdAsync, selectProductById, selectProductListStatus } from '../productSlice'
-import { useParams } from 'react-router-dom'
-import { addToCartAsync, selectItem } from '../../cart/cartSlice'
-import { selectloggedInUser } from '../../auth/authSlice'
+import { StarIcon } from '@heroicons/react/20/solid'
+import React, { useEffect, useState } from 'react'
 import { useAlert } from 'react-alert'
 import { Grid } from 'react-loader-spinner'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { addToCartAsync, selectItem } from '../../cart/cartSlice'
+import {
+  fetchProductByIdAsync,
+  selectProductById,
+  selectProductListStatus,
+} from '../productSlice'
 
 const colors = [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
@@ -40,9 +42,8 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const product = useSelector(selectProductById)
-  const user = useSelector(selectloggedInUser)
   const cart = useSelector(selectItem)
-  const status=useSelector(selectProductListStatus)
+  const status = useSelector(selectProductListStatus)
   const params = useParams()
   const dispatch = useDispatch()
   const alert = useAlert()
@@ -50,7 +51,7 @@ const ProductDetail = () => {
   const handleCart = (e) => {
     e.preventDefault()
     if (cart.findIndex((item) => item.product.id === product.id) < 0) {
-      const newItem = { product: product.id, quantity: 1, user: user.id }
+      const newItem = { product: product.id, quantity: 1 }
       dispatch(addToCartAsync(newItem))
       alert.success('Item added to Cart')
     } else {
@@ -64,20 +65,20 @@ const ProductDetail = () => {
 
   return (
     <div className='bg-white'>
-        {status === 'loading' && (
-              <div className='h-screen flex items-center justify-center'>
-                <Grid
-                  height='80'
-                  width='80'
-                  color='rgb(79, 70, 229'
-                  ariaLabel='grid-loading'
-                  radius='12.5'
-                  wrapperStyle={{}}
-                  wrapperClass=''
-                  visible={true}
-                />
-              </div>
-            )}
+      {status === 'loading' && (
+        <div className='h-screen flex items-center justify-center'>
+          <Grid
+            height='80'
+            width='80'
+            color='rgb(79, 70, 229'
+            ariaLabel='grid-loading'
+            radius='12.5'
+            wrapperStyle={{}}
+            wrapperClass=''
+            visible={true}
+          />
+        </div>
+      )}
       {product && (
         <div className='pt-6'>
           <nav aria-label='Breadcrumb'>

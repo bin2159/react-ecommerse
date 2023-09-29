@@ -1,5 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
+import {
+  ChevronDownIcon,
+  FunnelIcon,
+  MinusIcon,
+  PlusIcon,
+  Squares2X2Icon,
+  StarIcon,
+} from '@heroicons/react/20/solid'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import React, { Fragment, useEffect, useState } from 'react'
+import { Grid } from 'react-loader-spinner'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { ITEM_PER_PAGE, discountPercentage } from '../../../app/constant'
+import Pagination from '../../common/Pagination'
 import {
   fetchAllProductsByFilterAsync,
   fetchBrandsAsync,
@@ -10,25 +24,6 @@ import {
   selectProductListStatus,
   selectTotalItems,
 } from '../productSlice'
-import { Fragment } from 'react'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import {
-  ChevronDownIcon,
-  FunnelIcon,
-  MinusIcon,
-  PlusIcon,
-  Squares2X2Icon,
-} from '@heroicons/react/20/solid'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  StarIcon,
-} from '@heroicons/react/20/solid'
-import { Link } from 'react-router-dom'
-import { ITEM_PER_PAGE, discountPercentage } from '../../../app/constant'
-import Pagination from '../../common/Pagination'
-import { Grid } from 'react-loader-spinner'
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
   { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
@@ -48,7 +43,7 @@ export default function ProductList() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [sort, setSort] = useState({})
   const [page, setPage] = useState(1)
-  const status=useSelector(selectProductListStatus)
+  const status = useSelector(selectProductListStatus)
 
   const filters = [
     {
@@ -189,7 +184,7 @@ export default function ProductList() {
 
               {/* Product grid */}
               <div className='lg:col-span-3'>
-                <ProductGrid products={products} status={status}/>
+                <ProductGrid products={products} status={status} />
               </div>
 
               {/*Product grid end */}
@@ -392,22 +387,24 @@ const DesktopFilter = ({ handleFilter, filters }) => {
   )
 }
 
-const ProductGrid = ({ products,status }) => {
+const ProductGrid = ({ products, status }) => {
   return (
     <>
       <div className='bg-white'>
-      {status==='loading'&&
-        <div className="h-screen flex items-center justify-center"><Grid
-        height='80'
-        width='80'
-        color='rgb(79, 70, 229'
-        ariaLabel='grid-loading'
-        radius='12.5'
-        wrapperStyle={{}}
-        wrapperClass=''
-        visible={true}
-      />
-       </div>}
+        {status === 'loading' && (
+          <div className='h-screen flex items-center justify-center'>
+            <Grid
+              height='80'
+              width='80'
+              color='rgb(79, 70, 229'
+              ariaLabel='grid-loading'
+              radius='12.5'
+              wrapperStyle={{}}
+              wrapperClass=''
+              visible={true}
+            />
+          </div>
+        )}
         <div className='mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
           <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8'>
             {products.map((product) => (

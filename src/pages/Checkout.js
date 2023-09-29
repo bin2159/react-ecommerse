@@ -1,74 +1,81 @@
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
+import { discountPercentage } from '../app/constant'
 import {
   deleteItemAsync,
-  increment,
-  incrementAsync,
   selectItem,
   updateItemAsync,
 } from '../features/cart/cartSlice'
-import { useForm } from 'react-hook-form'
-import { selectloggedInUser} from '../features/auth/authSlice'
-import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice'
+import {
+  createOrderAsync,
+  selectCurrentOrder,
+} from '../features/order/orderSlice'
 import { selectUserInfo, updateUserAsync } from '../features/user/userSlice'
-import { discountPercentage } from '../app/constant'
-
 
 const Checkout = () => {
   const items = useSelector(selectItem)
   const dispatch = useDispatch()
-  const [open, setOpen] = useState(true)
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm()
   const user = useSelector(selectUserInfo)
-  const currentOrder=useSelector(selectCurrentOrder)
-  const [selectedAddress,setSelectedAddress]=useState(null)
-  const [paymentMethod,setPaymentMethod]=useState('cash')
+  const currentOrder = useSelector(selectCurrentOrder)
+  const [selectedAddress, setSelectedAddress] = useState(null)
+  const [paymentMethod, setPaymentMethod] = useState('cash')
   const totalAmount = items.reduce(
     (amount, item) => amount + discountPercentage(item.product) * item.quantity,
     0
   )
   const totalItems = items.reduce((total, item) => total + item.quantity, 0)
   const handleQuantity = (e, item) => {
-    dispatch(updateItemAsync({id:item.id, quantity: +e.target.value }))
+    dispatch(updateItemAsync({ id: item.id, quantity: +e.target.value }))
   }
   const handleRemove = (e, id) => {
     dispatch(deleteItemAsync(id))
   }
-  const handleAddress=(e,address)=>{
+  const handleAddress = (e, address) => {
     setSelectedAddress(address)
   }
-  const handlePayment=(e)=>{
+  const handlePayment = (e) => {
     setPaymentMethod(e.target.value)
   }
-  const handleOrder=()=>{
-    const order={items,totalAmount,totalItems,user:user.id,paymentMethod,selectedAddress,status:'pending'}
+  const handleOrder = () => {
+    const order = {
+      items,
+      totalAmount,
+      totalItems,
+      user: user.id,
+      paymentMethod,
+      selectedAddress,
+      status: 'pending',
+    }
     dispatch(createOrderAsync(order))
   }
   return (
     <>
       {!items.length && <Navigate to='/' />}
-      {currentOrder&&<Navigate to={`/order-success/${currentOrder.id}`} replace={true}/>}
+      {currentOrder && (
+        <Navigate to={`/order-success/${currentOrder.id}`} replace={true} />
+      )}
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5'>
           <div className='lg:col-span-3'>
             <form
               className='bg-white px-5 mt-10 py-5 mb-10'
               noValidate
-              onSubmit={handleSubmit((data) =>
-              {  dispatch(
+              onSubmit={handleSubmit((data) => {
+                dispatch(
                   updateUserAsync({
                     ...user,
                     addresses: [...user.addresses, data],
                   })
                 )
-              reset()}
-              )}
+                reset()
+              })}
             >
               <div className='border-b border-gray-900/10 pb-12 '>
                 <h2 className='text-2xl font-semibold leading-7 text-gray-900'>
@@ -221,7 +228,9 @@ const Checkout = () => {
                 <button
                   type='button'
                   className='text-sm font-semibold leading-6 text-gray-900'
-                  onClick={()=>{reset()}}
+                  onClick={() => {
+                    reset()
+                  }}
                 >
                   Reset
                 </button>
@@ -240,16 +249,16 @@ const Checkout = () => {
                 <p className='mt-1 text-sm leading-6 text-gray-600'>
                   Choose From Existing Address
                 </p>
-                <ul role='list'>
+                <ul>
                   {user.addresses.length > 0 &&
-                    user.addresses.map((address,index) => (
+                    user.addresses.map((address, index) => (
                       <li
                         key={index}
                         className='flex justify-between gap-x-6 py-5 border-solid border-2 border-gray-200 px-5'
                       >
                         <div className='flex min-w-0 gap-x-4'>
                           <input
-                            onChange={(e)=> handleAddress(e,address)}
+                            onChange={(e) => handleAddress(e, address)}
                             name='address'
                             type='radio'
                             value={index}
@@ -291,11 +300,11 @@ const Checkout = () => {
                       <div className='flex items-center gap-x-3'>
                         <input
                           id='cash'
-                          onChange={(e)=>handlePayment(e)}
+                          onChange={(e) => handlePayment(e)}
                           value='cash'
                           name='payment'
                           type='radio'
-                          checked={paymentMethod==='cash'}
+                          checked={paymentMethod === 'cash'}
                           className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
                         />
                         <label
@@ -308,9 +317,9 @@ const Checkout = () => {
                       <div className='flex items-center gap-x-3'>
                         <input
                           id='card'
-                          onChange={(e)=>handlePayment(e)}
+                          onChange={(e) => handlePayment(e)}
                           value='card'
-                          checked={paymentMethod==='card'}
+                          checked={paymentMethod === 'card'}
                           name='payment'
                           type='radio'
                           className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
@@ -335,7 +344,7 @@ const Checkout = () => {
               </h1>
               <div className='border-t border-gray-200  py-6 sm:px-6'>
                 <div className='flow-root'>
-                  <ul role='list' className='-my-6 divide-y divide-gray-200'>
+                  <ul className='-my-6 divide-y divide-gray-200'>
                     {items.map((item) => (
                       <li key={item.id} className='flex py-6'>
                         <div className='h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200'>
@@ -350,9 +359,13 @@ const Checkout = () => {
                           <div>
                             <div className='flex justify-between text-base font-medium text-gray-900'>
                               <h3>
-                                <a href={item.product.href}>{item.product.title}</a>
+                                <a href={item.product.href}>
+                                  {item.product.title}
+                                </a>
                               </h3>
-                              <p className='ml-4'>${discountPercentage(item.product)}</p>
+                              <p className='ml-4'>
+                                ${discountPercentage(item.product)}
+                              </p>
                             </div>
                             <p className='mt-1 text-sm text-gray-500'>
                               {item.product.brand}
@@ -366,9 +379,7 @@ const Checkout = () => {
                               >
                                 Qty
                               </label>
-                              <select
-                                onChange={(e) => handleQuantity(e, item)}
-                              >
+                              <select onChange={(e) => handleQuantity(e, item)}>
                                 <option value='1'>1</option>
                                 <option value='2'>2</option>
                                 <option value='3'>3</option>
@@ -422,7 +433,7 @@ const Checkout = () => {
                       <button
                         type='button'
                         className='font-medium text-indigo-600 hover:text-indigo-500'
-                        onClick={() => setOpen(false)}
+                        
                       >
                         Continue Shopping
                         <span aria-hidden='true'> &rarr;</span>

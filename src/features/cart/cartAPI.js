@@ -9,10 +9,10 @@ export function addToCart(item) {
     resolve({ data })
   })
 }
-export function fetchCartByUserId(userId) {
+export function fetchCartByUserId() {
   return new Promise(async (resolve) => {
     //TODO: we will not hardcord server URL  here
-    const response = await fetch('http://localhost:8080/cart?user=' + userId)
+    const response = await fetch('http://localhost:8080/cart')
     const data = await response.json()
     resolve({ data })
   })
@@ -41,11 +41,10 @@ export function deleteItem(itemId) {
   })
 }
 
-export function resetCart(userId) {
+export function resetCart() {
   return new Promise(async (resolve) => {
-    const response = await fetchCartByUserId(userId)
+    const response = await fetchCartByUserId()
     const items = response.data
-    console.log(items)
     for (let item of items) {
       await deleteItem(item.id)
     }

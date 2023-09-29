@@ -1,24 +1,23 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { Grid } from 'react-loader-spinner'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom'
+import { discountPercentage } from '../../app/constant'
+import Modal from '../common/Modal'
 import {
   deleteItemAsync,
   selectCartListStatus,
+  selectCartLoaded,
   selectItem,
   updateItemAsync,
 } from './cartSlice'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Link, Navigate } from 'react-router-dom'
-import { updateItem } from './cartAPI'
-import { discountPercentage } from '../../app/constant'
-import { Grid } from 'react-loader-spinner'
-import Modal from '../common/Modal'
 
 export default function Cart() {
   const items = useSelector(selectItem)
   const dispatch = useDispatch()
   const [openModal, setOpenModal] = useState(null)
   const status = useSelector(selectCartListStatus)
+  const cartLoaded=useSelector(selectCartLoaded)
   const totalAmount = items.reduce(
     (amount, item) => amount + discountPercentage(item.product) * item.quantity,
     0
@@ -32,7 +31,7 @@ export default function Cart() {
   }
   return (
     <>
-      {!items.length && <Navigate to='/' replace={true} />}
+      {cartLoaded&&!items.length && <Navigate to='/' replace={true} />}
 
       <div className='mx-auto mt-10 max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-white'>
         <h1 className='text-4xl font-bold tracking-tight text-gray-900 py-2 px-4'>
@@ -101,12 +100,12 @@ export default function Cart() {
                           message='Are you sure you want to delete'
                           action='Delete'
                           cancel='Cancel'
-                          actionHandler={()=>handleRemove(item.id)}
-                          cancelHandler={()=>setOpenModal(null)}
-                          showModal={openModal===item.id}
+                          actionHandler={() => handleRemove(item.id)}
+                          cancelHandler={() => setOpenModal(null)}
+                          showModal={openModal === item.id}
                         />
                         <button
-                          onClick={()=>setOpenModal(item.id)}
+                          onClick={() => setOpenModal(item.id)}
                           type='button'
                           className='font-medium text-indigo-600 hover:text-indigo-500'
                         >

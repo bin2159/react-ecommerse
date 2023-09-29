@@ -1,15 +1,9 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  checkUserAsync,
-  resetError,
-  selectCount,
-  selectError,
-  selectloggedInUser,
-} from '../authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
 import logo from '../../../assets/businesslogo.png'
+import { loginUserAsync, selectError, selectloggedInUser } from '../authSlice'
 
 export default function Login() {
   const dispatch = useDispatch()
@@ -20,9 +14,6 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm()
-  const handleResetError = () => {
-    dispatch(resetError())
-  }
   return (
     <>
       {user && <Navigate to='/' replace={true} />}
@@ -44,7 +35,7 @@ export default function Login() {
             className='space-y-6'
             onSubmit={handleSubmit((data) =>
               dispatch(
-                checkUserAsync({ email: data.email, password: data.password })
+                loginUserAsync({ email: data.email, password: data.password })
               )
             )}
           >
@@ -52,8 +43,7 @@ export default function Login() {
               <label
                 htmlFor='email'
                 className='block text-sm font-medium leading-6 text-gray-900'
-
-              > 
+              >
                 Email address
               </label>
               <div className='mt-2'>
@@ -68,11 +58,7 @@ export default function Login() {
                     },
                   })}
                   className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                  
                 />
-                {errors.email && (
-                  <p className='text-red-500'>{errors.email.message}</p> //for form error
-                )}
               </div>
             </div>
 
@@ -103,10 +89,8 @@ export default function Login() {
                   })}
                   className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
-                {errors.password && (
-                  <p className='text-red-500'>{errors.password.message}</p>
-                )}
-                {error && <p className='text-red-500'>{error.message}</p>}
+
+                {error && <p className='text-red-500'>{error}</p>}
               </div>
             </div>
 

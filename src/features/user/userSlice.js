@@ -13,24 +13,23 @@ const initialState = {
 
 export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   'user/fetchLoggedInUserOrders',
-  async (userId) => {
-    const response = await fetchLoggedInUserOrders(userId)
+  async () => {
+    const response = await fetchLoggedInUserOrders()
     return response.data
   }
 )
 export const updateUserAsync = createAsyncThunk(
   'user/updateUser',
-  async (userInfo) => {
-    const response = await updateUser(userInfo)
-    // The value we return becomes the `fulfilled` action payload
+  async (update) => {
+    const response = await updateUser(update)
     return response.data
   }
 )
 
 export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
-  async (userId) => {
-    const response = await fetchLoggedInUser(userId)
+  async () => {
+    const response = await fetchLoggedInUser()
     return response.data
   }
 )
@@ -78,5 +77,6 @@ export const { increment, decrement, incrementByAmount } = userSlice.actions
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectUserOrder = (state) => state.user.orders
 export const selectUserInfo = (state) => state.user.userInfo
+export const selectOrderStatus=(state)=>state.user.status
 
 export default userSlice.reducer

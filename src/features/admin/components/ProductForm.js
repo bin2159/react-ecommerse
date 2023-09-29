@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import { useAlert } from 'react-alert'
+import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import Modal from '../../common/Modal'
 import {
   clearSelectedProduct,
   createProductAsync,
@@ -10,12 +13,6 @@ import {
   selectProductById,
   updateProductAsync,
 } from '../../product-list/productSlice'
-import { useForm } from 'react-hook-form'
-import { checkUserAsync, selectError } from '../../auth/authSlice'
-import { useNavigate, useParams } from 'react-router-dom'
-import { fetchProductById } from '../../product-list/productAPI'
-import Modal from '../../common/Modal'
-import { useAlert } from 'react-alert'
 
 const ProductForm = () => {
   const brands = useSelector(selectBrands)
@@ -31,23 +28,24 @@ const ProductForm = () => {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
   } = useForm()
 
   const handleDelete = () => {
-      const product = { ...selectedProduct }
-      product.deleted = true
-      dispatch(updateProductAsync(product))
-      navigate('/admin')
-      alert.success('Product Deleted Successfully')
-      
+    const product = { ...selectedProduct }
+    product.deleted = true
+    dispatch(updateProductAsync(product))
+    navigate('/admin')
+    alert.success('Product Deleted Successfully')
   }
-
+  
   useEffect(() => {
     if (params.id) {
       dispatch(fetchProductByIdAsync(params.id))
+    }else{
+      dispatch(clearSelectedProduct())
     }
-  }, [dispatch, params.id])
+    
+  }, [dispatch, params.id,reset])
   useEffect(() => {
     if (selectedProduct) {
       setValue('title', selectedProduct.title)
@@ -62,6 +60,7 @@ const ProductForm = () => {
       setValue('image2', selectedProduct.images[1])
       setValue('image3', selectedProduct.images[2])
     }
+
   }, [setValue, selectedProduct])
   return (
     <>
@@ -343,14 +342,14 @@ const ProductForm = () => {
           <button
             type='button'
             className='text-sm font-semibold leading-6 text-gray-900'
-            onClick={()=> navigate('/admin')}
+            onClick={() => navigate('/admin')}
           >
             Cancel
           </button>
           {selectedProduct && !selectedProduct.deleted && (
             <button
               type='button'
-              onClick={()=>setOpenModal(true)}
+              onClick={() => setOpenModal(true)}
               className='rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
             >
               Delete
@@ -364,15 +363,17 @@ const ProductForm = () => {
           </button>
         </div>
       </form>
-      {selectedProduct&&<Modal
-        title={`Delete ${selectedProduct.title}`}
-        message='Are you sure you want to delete this Product'
-        action='Delete'
-        cancel='Cancel'
-        actionHandler={ handleDelete}
-        cancelHandler={() => setOpenModal(null)}
-        showModal={openModal}
-      />}
+      {selectedProduct && (
+        <Modal
+          title={`Delete ${selectedProduct.title}`}
+          message='Are you sure you want to delete this Product'
+          action='Delete'
+          cancel='Cancel'
+          actionHandler={handleDelete}
+          cancelHandler={() => setOpenModal(null)}
+          showModal={openModal}
+        />
+      )}
     </>
   )
 }

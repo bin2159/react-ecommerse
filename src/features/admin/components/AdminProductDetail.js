@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductByIdAsync, selectProductById } from '../../product-list/productSlice'
 import { useParams } from 'react-router-dom'
 import { addToCartAsync } from '../../cart/cartSlice'
-import { selectloggedInUser } from '../../auth/authSlice'
 import { discountPercentage } from '../../../app/constant'
 
 const colors = [
@@ -39,13 +38,12 @@ const AdminProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const product = useSelector(selectProductById)
-  const user = useSelector(selectloggedInUser)
   const params = useParams()
   const dispatch = useDispatch()
 
   const handleCart = (e) => {
     e.preventDefault()
-    const newItem = { ...product, quantity: 1, user: user.id }
+    const newItem = { ...product, quantity: 1}
     delete newItem['id']
     dispatch(addToCartAsync(newItem))
   }
@@ -60,7 +58,6 @@ const AdminProductDetail = () => {
         <div className='pt-6'>
           <nav aria-label='Breadcrumb'>
             <ol
-              role='list'
               className='mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8'
             >
               {product.breadcrumbs &&
@@ -324,7 +321,7 @@ const AdminProductDetail = () => {
                 </h3>
 
                 <div className='mt-4'>
-                  <ul role='list' className='list-disc space-y-2 pl-4 text-sm'>
+                  <ul className='list-disc space-y-2 pl-4 text-sm'>
                     {highlights.map((highlight) => (
                       <li key={highlight} className='text-gray-400'>
                         <span className='text-gray-600'>{highlight}</span>

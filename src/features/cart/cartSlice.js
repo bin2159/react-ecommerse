@@ -4,6 +4,7 @@ import { addToCart, deleteItem, fetchCartByUserId, resetCart, updateItem } from 
 const initialState = {
   item:[],
   status: 'idle',
+  cartLoaded:false
 };
 
 
@@ -18,8 +19,8 @@ export const addToCartAsync = createAsyncThunk(
 
 export const fetchCartByUserIdAsync = createAsyncThunk(
   'cart/fetchCartByUserId',
-  async (item) => {
-    const response = await fetchCartByUserId(item);
+  async () => {
+    const response = await fetchCartByUserId();
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -44,8 +45,8 @@ export const deleteItemAsync = createAsyncThunk(
 );
 
 export const resetCartAsync =createAsyncThunk(
-  'cart/resetCart',async(userId)=>{
-    const response=await resetCart(userId)
+  'cart/resetCart',async()=>{
+    const response=await resetCart()
     return response.data
   }
 )
@@ -76,6 +77,10 @@ export const cartSlice = createSlice({
       .addCase(fetchCartByUserIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.item=(action.payload);
+        state.cartLoaded=true
+      })
+      .addCase(fetchCartByUserIdAsync.rejected,(state)=>{
+        state.cartLoaded=true
       })
       .addCase(updateItemAsync.pending, (state) => {
         state.status = 'loading';
@@ -103,13 +108,14 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = cartSlice.actions;
+export const { increment, decrement, clearSelectedProduct } = cartSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectItem = (state) => state.cart.item;
 export const selectCartListStatus=(state)=>state.cart.status
+export const selectCartLoaded=(state)=>state.cart.cartLoaded
 
 
 export default cartSlice.reducer;

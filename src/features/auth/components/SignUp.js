@@ -1,30 +1,31 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { selectloggedInUser, createUserAsync, selectError, resetError } from '../authSlice'
 import { Link, Navigate } from 'react-router-dom'
 import logo from '../../../assets/businesslogo.png'
-
+import {
+  createUserAsync,
+  selectError,
+  selectloggedInUser,
+} from '../authSlice'
 
 export default function SignUp() {
   const dispatch = useDispatch()
-  const error=useSelector(selectError)
+  const error = useSelector(selectError)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
   const user = useSelector(selectloggedInUser)
-  const handleResetError=()=>{
-    dispatch(resetError())
-  }
+ 
   return (
     <>
       {user && <Navigate to='/' replace={true} />}
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
         <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <img
+          <img
             className='mx-auto h-12 w-12 mt-4'
             src={logo}
             alt='Your Company'
@@ -44,7 +45,7 @@ export default function SignUp() {
                   email: data.email,
                   password: data.password,
                   addresses: [],
-                  role:'user'
+                  role: 'user',
                 })
               )
             )}
@@ -135,11 +136,7 @@ export default function SignUp() {
                     {errors.confirmPassword.message}
                   </p>
                 )}
-                {error&& (
-                  <p className='text-red-500'>
-                    {error.message}
-                  </p>
-                )}
+                {error && <p className='text-red-500'>{error.message}</p>}
               </div>
             </div>
 
