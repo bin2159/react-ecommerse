@@ -17,11 +17,7 @@ import { selectUserInfo, updateUserAsync } from '../features/user/userSlice'
 const Checkout = () => {
   const items = useSelector(selectItem)
   const dispatch = useDispatch()
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm()
+  const { register, handleSubmit, reset } = useForm()
   const user = useSelector(selectUserInfo)
   const currentOrder = useSelector(selectCurrentOrder)
   const [selectedAddress, setSelectedAddress] = useState(null)
@@ -58,8 +54,11 @@ const Checkout = () => {
   return (
     <>
       {!items.length && <Navigate to='/' />}
-      {currentOrder && (
+      {currentOrder && currentOrder.paymentMethod==='cash' &&(
         <Navigate to={`/order-success/${currentOrder.id}`} replace={true} />
+      )}
+       {currentOrder && currentOrder.paymentMethod==='card' &&(
+        <Navigate to={`/stripe-checkout/`} replace={true} />
       )}
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5'>
@@ -433,7 +432,6 @@ const Checkout = () => {
                       <button
                         type='button'
                         className='font-medium text-indigo-600 hover:text-indigo-500'
-                        
                       >
                         Continue Shopping
                         <span aria-hidden='true'> &rarr;</span>

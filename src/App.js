@@ -3,7 +3,6 @@ import { Provider, positions } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import { useDispatch, useSelector } from 'react-redux'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import './App.css'
 import {
   checkAuthAsync,
   selectUserChecked,
@@ -29,6 +28,7 @@ import ProductDetailPage from './pages/ProductDetailPage'
 import SignUpPage from './pages/SignUpPage'
 import UserOrderPage from './pages/UserOrderPage'
 import UserProfilePage from './pages/UserProfilePage'
+import StripeCheckout from './pages/StripeCheckout'
 const options = {
   timeout: 5000,
   position: positions.BOTTOM_LEFT,
@@ -144,6 +144,14 @@ const router = createBrowserRouter([
     ),
   },
   { path: '/logOut', element: <LogOut /> },
+  {
+    path: '/stripe-checkout',
+    element: (
+      <Protected>
+        <StripeCheckout/>
+      </Protected>
+    ),
+  },
   {
     path: '*',
     element: <PageNotFound />,
